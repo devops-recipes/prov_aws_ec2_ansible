@@ -8,3 +8,4 @@ ec2_count: ${ec2_count}
 ec2_security_group_id: "${ec2_security_group}"
 ec2_subnet_id: "${ec2_subnet_id}"
 ec2_tag_Type: "${ec2_instance_type}"
+ec2_tag_Role: "${ec2_tag_Role}"
