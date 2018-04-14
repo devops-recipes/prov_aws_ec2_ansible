@@ -1,0 +1,63 @@
+resources:
+# Automation scripts repo
+  - name: aws_ec2_repo
+    type: gitRepo
+    integration: "drship_github"
+    versionTemplate:
+      sourceName: "devops-recipes/prov_aws_ec2_ansible"
+      branch: master
+
+# AWS CLI config - kops
+  - name: aws_cli_ec2
+    type: cliConfig
+    integration: "drship_aws"
+    pointer:
+      region: us-east-1
+
+# AWS CLI config - kops
+  - name: aws_ec2_pem
+    type: integration
+    integration: "drship_aws_pem"
+
+# Output of VPC provisioning
+  - name: aws_ec2_info
+    type: params
+    versionTemplate:
+      params:
+        SEED: "initial_version"
+jobs:
+# Provision AWS VPC with Ansible
+  - name: prov_aws_ec2_ans
+    type: runSh
+    steps:
+      - IN: aws_ec2_repo
+      - IN: aws_cli_ec2
+        switch: off
+      - IN: aws_ec2_pem
+        switch: off
+      - IN: aws_vpc_info
+        switch: off
+      - TASK:
+          name: prov_ec2
+          runtime:
+            options:
+              env:
+                - STATE_RES_NAME: "aws_ec2_info"
+                - ec2_region: "us-east-1"
+                - ec2_instance_type: "t2.micro"
+                - ec2_image: "ami-43a15f3e"
+                - ec2_keypair: "dr_us_east_1"
+                - ec2_volume_size: 30
+                - ec2_count: 1
+          script:
+            - pushd $(shipctl get_resource_state "aws_ec2_repo")/ansible
+            - export ec2_security_group_id=$(shipctl get_resource_version_key aws_vpc_info security_group_id)
+            - export ec2_subnet_id=$(shipctl get_resource_version_key aws_vpc_info public_subnet_id)
+            - shipctl replace group_vars/variables.yml
+            - ansible-playbook -v ec2_provision.yml
+      - OUT: aws_ec2_info
+        overwrite: true
+    flags:
+      - aws_ec2
+      - aws
+      - ansible

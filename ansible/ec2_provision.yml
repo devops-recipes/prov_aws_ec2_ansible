@@ -1,0 +1,13 @@
+---
+### provision AWS EC2 instance
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  user: root
+  pre_tasks:
+    - include_vars: group_vars/variables.yml
+  roles:
+    - ec2_provision
+  post_tasks:
+    - name: refresh hosts inventory list
+      meta: refresh_inventory

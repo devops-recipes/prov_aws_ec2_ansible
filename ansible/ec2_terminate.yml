@@ -1,0 +1,10 @@
+---
+### terminate AWS EC/2 instances
+- hosts: ecsinstances
+  connection: local
+  gather_facts: false
+  user: root
+  pre_tasks:
+    - include_vars: group_vars/variables.yml
+  roles:
+    - ec2_terminate
