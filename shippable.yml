@@ -78,8 +78,6 @@ jobs:
             - pushd $(shipctl get_resource_state "aws_ec2_repo")/ansible
             - shipctl replace group_vars/variables.yml
             - ansible-playbook -v ec2_terminate.yml
-      - OUT: aws_ec2_info
-        overwrite: true
     flags:
       - aws_ec2
       - aws
