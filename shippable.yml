@@ -31,6 +31,7 @@ jobs:
     type: runSh
     steps:
       - IN: aws_ec2_repo
+        switch: off
       - IN: aws_cli_ec2
         switch: off
       - IN: aws_ec2_pem

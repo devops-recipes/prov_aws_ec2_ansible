@@ -19,5 +19,6 @@
     state: absent
     wait: true
     instance_ids: "{{instances|json_query('instances[*].id')}}"
+    region: "{{ ec2_region }}"
   when: instances
 

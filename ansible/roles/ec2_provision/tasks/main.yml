@@ -39,5 +39,5 @@
   shell: |
     shipctl put_resource_state "{{ STATE_RES_NAME }}" "INST_{{ item.ami_launch_index }}_PUBLIC_IP" "{{ item.public_ip }}"
     shipctl put_resource_state "{{ STATE_RES_NAME }}" "INST_{{ item.ami_launch_index }}_ID" "{{ item.id }}"
-    shipctl put_resource_state_multi "{{ STATE_RES_NAME }}" "ec2_tag_Type={{ ec2_tag_Type }}" "ec2_tag_Role={{ ec2_tag_Role }}"
+    shipctl put_resource_state_multi "{{ STATE_RES_NAME }}" "ec2_tag_Type={{ ec2_tag_Type }}" "ec2_tag_Role={{ ec2_tag_Role }}" "ec2_region={{ ec2_region }}"
   with_items: "{{ ec2.instances }}"
