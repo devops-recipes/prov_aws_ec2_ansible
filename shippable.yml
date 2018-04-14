@@ -54,8 +54,11 @@ jobs:
             - pushd $(shipctl get_resource_state "aws_ec2_repo")/ansible
             - export ec2_security_group_id=$(shipctl get_resource_version_key aws_vpc_info security_group_id)
             - export ec2_subnet_id=$(shipctl get_resource_version_key aws_vpc_info public_subnet_id)
+            - echo $ec2_subnet_id
+            - echo ec2_security_group_id
             - shipctl replace group_vars/variables.yml
-            - ansible-playbook -v ec2_provision.yml
+            - cat group_vars/variables.yml
+            #- ansible-playbook -v ec2_provision.yml
       - OUT: aws_ec2_info
         overwrite: true
     flags:
