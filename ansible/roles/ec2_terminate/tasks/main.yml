@@ -1,12 +1,11 @@
 ---
 - name: Get EC2 instance IDs
   run_once: true
-
   ec2_remote_facts:
     filters:
       "tag:Type": "{{ ec2_tag_Type }}"
       "tag:Role": "{{ ec2_tag_Role }}"
-      "region": "{{ ec2_region }}"
+    region: "{{ ec2_region }}"
   register: instances
 
 - name: display instances
