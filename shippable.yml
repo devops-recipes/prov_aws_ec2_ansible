@@ -45,7 +45,7 @@ jobs:
               env:
                 - STATE_RES_NAME: "aws_ec2_info"
                 - ec2_region: "us-east-1"
-                - ec2_instance_type: "t2.micro"
+                - ec2_tag_Type: "t2.micro"
                 - ec2_image: "ami-43a15f3e"
                 - ec2_keypair: "dr_us_east_1"
                 - ec2_tag_Role: "demo-machines"
