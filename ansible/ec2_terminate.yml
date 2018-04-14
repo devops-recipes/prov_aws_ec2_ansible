@@ -1,6 +1,6 @@
 ---
 ### terminate AWS EC/2 instances
-- hosts: ecsinstances
+- hosts: localhost
   connection: local
   gather_facts: false
   user: root

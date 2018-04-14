@@ -26,7 +26,7 @@ resources:
       params:
         SEED: "initial_version"
 jobs:
-# Provision AWS VPC with Ansible
+# Provision AWS EC2 with Ansible
   - name: prov_aws_ec2_ans
     type: runSh
     steps:
@@ -54,6 +54,30 @@ jobs:
             - pushd $(shipctl get_resource_state "aws_ec2_repo")/ansible
             - shipctl replace group_vars/variables.yml
             - ansible-playbook -v ec2_provision.yml
+      - OUT: aws_ec2_info
+        overwrite: true
+    flags:
+      - aws_ec2
+      - aws
+      - ansible
+
+# Terminate AWS EC2 with Ansible
+  - name: term_aws_ec2_ans
+    type: runSh
+    steps:
+      - IN: aws_ec2_repo
+      - IN: aws_cli_ec2
+        switch: off
+      - IN: aws_ec2_pem
+        switch: off
+      - IN: aws_ec2_info
+        switch: off
+      - TASK:
+          name: term_ec2
+          script:
+            - pushd $(shipctl get_resource_state "aws_ec2_repo")/ansible
+            - shipctl replace group_vars/variables.yml
+            - ansible-playbook -v ec2_terminate.yml
       - OUT: aws_ec2_info
         overwrite: true
     flags:
