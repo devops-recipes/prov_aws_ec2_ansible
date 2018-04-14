@@ -76,6 +76,7 @@ jobs:
           name: term_ec2
           script:
             - pushd $(shipctl get_resource_state "aws_ec2_repo")/ansible
+            - export ec2_region="us-east-1"
             - shipctl replace group_vars/variables.yml
             - ansible-playbook -v ec2_terminate.yml
     flags:
