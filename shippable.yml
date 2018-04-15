@@ -14,7 +14,7 @@ resources:
     pointer:
       region: us-east-1
 
-# AWS CLI config - kops
+# AWS CLI config
   - name: aws_ec2_pem
     type: integration
     integration: "drship_aws_pem"
