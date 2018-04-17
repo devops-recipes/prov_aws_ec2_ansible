@@ -1,0 +1,11 @@
+STATE_RES_NAME: "${STATE_RES_NAME}"
+ec2_region: "${ec2_region}"
+ec2_instance_type: "${ec2_tag_Type}"
+ec2_image: "${ec2_image}"
+ec2_keypair: "${ec2_keypair}"
+ec2_volume_size: ${ec2_volume_size}
+ec2_count: ${ec2_count}
+ec2_security_group_id: "${security_group_id}"
+ec2_subnet_id: "${public_subnet_id}"
+ec2_tag_Type: "${ec2_tag_Type}"
+ec2_tag_Role: "${ec2_tag_Role}"
