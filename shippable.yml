@@ -7,14 +7,14 @@ resources:
       sourceName: "devops-recipes/prov_aws_ec2_ansible"
       branch: master
 
-# AWS CLI config - kops
+# AWS CLI config
   - name: aws_cli_ec2
     type: cliConfig
     integration: "drship_aws"
     pointer:
       region: us-east-1
 
-# AWS CLI config
+# AWS PEM Key
   - name: aws_ec2_pem
     type: integration
     integration: "drship_aws_pem"
@@ -48,13 +48,13 @@ jobs:
                 - ec2_tag_Type: "t2.micro"
                 - ec2_image: "ami-43a15f3e"
                 - ec2_keypair: "dr_us_east_1"
-                - ec2_tag_Role: "demo-machines"
+                - ec2_tag_Role: "demo_machines"
                 - ec2_volume_size: 30
                 - ec2_count: 1
           script:
             - pushd $(shipctl get_resource_state "aws_ec2_repo")/ansible
             - shipctl replace group_vars/variables.yml
-            - ansible-playbook -v ec2_provision.yml
+            - ansible-playbook -v ec2_prov_playbook.yml
       - OUT: aws_ec2_info
         overwrite: true
     flags:
@@ -79,7 +79,7 @@ jobs:
             - pushd $(shipctl get_resource_state "aws_ec2_repo")/ansible
             - export ec2_region="us-east-1"
             - shipctl replace group_vars/variables.yml
-            - ansible-playbook -v ec2_terminate.yml
+            - ansible-playbook -v ec2_term_playbook.yml
     flags:
       - aws_ec2
       - aws
