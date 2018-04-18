@@ -19,12 +19,13 @@ resources:
     type: integration
     integration: "drship_aws_pem"
 
-# Output of VPC provisioning
+# Output of EC2 provisioning
   - name: aws_ec2_info
     type: params
     versionTemplate:
       params:
         SEED: "initial_version"
+
 jobs:
 # Provision AWS EC2 with Ansible
   - name: prov_aws_ec2_ans
@@ -53,7 +54,7 @@ jobs:
                 - ec2_count: 1
           script:
             - pushd $(shipctl get_resource_state "aws_ec2_repo")/ansible
-            - shipctl replace group_vars/variables.yml
+            - shipctl replace variables.yml
             - ansible-playbook -v ec2_prov_playbook.yml
       - OUT: aws_ec2_info
         overwrite: true
