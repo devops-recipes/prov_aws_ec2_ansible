@@ -7,12 +7,10 @@ resources:
       sourceName: "devops-recipes/prov_aws_ec2_ansible"
       branch: master
 
-# AWS CLI config
-  - name: aws_cli_ec2
-    type: cliConfig
+# AWS credentials
+  - name: aws_ec2_creds
+    type: integration
     integration: "drship_aws"
-    pointer:
-      region: us-east-1
 
 # AWS PEM Key
   - name: aws_ec2_pem
@@ -33,7 +31,7 @@ jobs:
     steps:
       - IN: aws_ec2_repo
         switch: off
-      - IN: aws_cli_ec2
+      - IN: aws_ec2_creds
         switch: off
       - IN: aws_ec2_pem
         switch: off
@@ -54,6 +52,8 @@ jobs:
                 - ec2_count: 1
           script:
             - pushd $(shipctl get_resource_state "aws_ec2_repo")/ansible
+            - export AWS_ACCESS_KEY_ID=$(shipctl get_integration_resource_field aws_ec2_creds "accessKey")
+            - export AWS_SECRET_ACCESS_KEY=$(shipctl get_integration_resource_field aws_ec2_creds "secretKey")
             - shipctl replace variables.yml
             - ansible-playbook -v ec2_prov_playbook.yml
       - OUT: aws_ec2_info
@@ -68,7 +68,7 @@ jobs:
     type: runSh
     steps:
       - IN: aws_ec2_repo
-      - IN: aws_cli_ec2
+      - IN: aws_ec2_creds
         switch: off
       - IN: aws_ec2_pem
         switch: off
@@ -79,6 +79,8 @@ jobs:
           script:
             - pushd $(shipctl get_resource_state "aws_ec2_repo")/ansible
             - export ec2_region="us-east-1"
+            - export AWS_ACCESS_KEY_ID=$(shipctl get_integration_resource_field aws_ec2_creds "accessKey")
+            - export AWS_SECRET_ACCESS_KEY=$(shipctl get_integration_resource_field aws_ec2_creds "secretKey")
             - shipctl replace variables.yml
             - ansible-playbook -v ec2_term_playbook.yml
     flags:
