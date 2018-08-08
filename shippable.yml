@@ -10,7 +10,7 @@ resources:
 # AWS credentials
   - name: aws_ec2_creds
     type: integration
-    integration: "drship_aws"
+    integration: "dr_aws"
 
 # AWS PEM Key
   - name: aws_ec2_pem
